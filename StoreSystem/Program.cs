@@ -12,12 +12,13 @@ var storage = new DataStorage();
 ICategoryRepository categoryRepository = new CategoryRepository(storage);
 IProductRepository productRepository = new ProductRepository(storage);
 ICustomerRepository customerRepository = new CustomerRepository(storage);
+IEmployeeRepository employeeRepository = new EmployeeRepository(storage);
 IOrderRepository orderRepository = new OrderRepository(storage);
 
 // Рівень бізнес-логіки
 var productService = new ProductService(productRepository, categoryRepository);
 var orderService = new OrderService(orderRepository, productRepository, customerRepository);
-var infoService = new StoreInfoService(productRepository, categoryRepository, customerRepository, orderRepository);
+var infoService = new StoreInfoService(productRepository, categoryRepository, customerRepository, employeeRepository, orderRepository);
 
 // Рівень представлення
 var menu = new ConsoleMenu(productService, orderService, infoService);

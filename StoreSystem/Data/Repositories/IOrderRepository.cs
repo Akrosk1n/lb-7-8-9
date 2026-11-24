@@ -2,10 +2,7 @@ using StoreSystem.Domain;
 
 namespace StoreSystem.Data.Repositories;
 
-public interface IOrderRepository
+public interface IOrderRepository : IRepository<Order>
 {
-    IReadOnlyList<Order> GetAll();
-    Order? GetById(int id);
     int GetNextId();
-    void Add(Order order);
 }

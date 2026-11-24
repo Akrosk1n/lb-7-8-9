@@ -11,6 +11,7 @@ public class DataStorage
     public List<Category> Categories { get; } = new();
     public List<Product> Products { get; } = new();
     public List<Customer> Customers { get; } = new();
+    public List<Employee> Employees { get; } = new();
     public List<Order> Orders { get; } = new();
 
     public DataStorage()
@@ -29,5 +30,8 @@ public class DataStorage
 
         Customers.Add(new Customer(1, "Іваненко Петро", "+380501112233"));
         Customers.Add(new Customer(2, "Коваленко Марія", "+380671234567"));
+
+        Employees.Add(new Employee(1, "Шевченко Олена", "+380931112244", "Продавець"));
+        Employees.Add(new Employee(2, "Бондаренко Андрій", "+380991234500", "Адміністратор"));
     }
 }

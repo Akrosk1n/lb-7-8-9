@@ -11,4 +11,6 @@ public class CustomerRepository : ICustomerRepository
     public IReadOnlyList<Customer> GetAll() => _storage.Customers;
 
     public Customer? GetById(int id) => _storage.Customers.FirstOrDefault(c => c.Id == id);
+
+    public void Add(Customer item) => _storage.Customers.Add(item);
 }

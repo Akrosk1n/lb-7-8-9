@@ -50,10 +50,10 @@ public class OrderService
             throw new ValidationException(
                 $"Недостатньо товару на складі. Доступно: {product.Quantity} шт.");
 
-        product.Quantity -= quantity;
+        product.Reduce(quantity);
 
         var order = new Order(_orders.GetNextId(), customer);
-        order.Items.Add(new OrderItem(product, quantity));
+        order.AddItem(new OrderItem(product, quantity));
         _orders.Add(order);
         return order;
     }
@@ -71,10 +71,25 @@ public class OrderService
         if (newStatus == OrderStatus.Cancelled)
         {
             foreach (var item in order.Items)
-                item.Product.Quantity += item.Quantity;
+                item.Product.Restore(item.Quantity);
         }
 
         order.Status = newStatus;
+    }
+
+    /// <summary>Оплата замовлення обраним способом. Спосіб оплати визначає комісію (поліморфізм).</summary>
+    public Payment PayOrder(int orderId, bool byCard)
+    {
+        var order = _orders.GetById(orderId)
+            ?? throw new ValidationException("Замовлення з таким ID не знайдено.");
+
+        if (order.Status != OrderStatus.AwaitingPayment)
+            throw new ValidationException("Оплатити можна лише замовлення у стані «Очікує оплати».");
+
+        Payment payment = byCard ? new CardPayment(order.Total) : new CashPayment(order.Total);
+        order.Payment = payment;
+        ChangeStatus(orderId, OrderStatus.Paid);
+        return payment;
     }
 
     public static string StatusName(OrderStatus status) => status switch

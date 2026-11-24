@@ -14,5 +14,5 @@ public class OrderRepository : IOrderRepository
 
     public int GetNextId() => _storage.Orders.Count == 0 ? 1 : _storage.Orders.Max(o => o.Id) + 1;
 
-    public void Add(Order order) => _storage.Orders.Add(order);
+    public void Add(Order item) => _storage.Orders.Add(item);
 }

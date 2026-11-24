@@ -22,5 +22,5 @@ public class ProductRepository : IProductRepository
 
     public int GetNextId() => _storage.Products.Count == 0 ? 1 : _storage.Products.Max(p => p.Id) + 1;
 
-    public void Add(Product product) => _storage.Products.Add(product);
+    public void Add(Product item) => _storage.Products.Add(item);
 }

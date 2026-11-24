@@ -11,4 +11,6 @@ public class CategoryRepository : ICategoryRepository
     public IReadOnlyList<Category> GetAll() => _storage.Categories;
 
     public Category? GetById(int id) => _storage.Categories.FirstOrDefault(c => c.Id == id);
+
+    public void Add(Category item) => _storage.Categories.Add(item);
 }

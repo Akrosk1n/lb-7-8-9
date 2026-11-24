@@ -44,6 +44,8 @@ public class ConsoleMenu
                     case "6": CreateOrder(); break;
                     case "7": ChangeOrderStatus(); break;
                     case "8": ShowStoreInfo(); break;
+                    case "9": PayOrder(); break;
+                    case "10": ShowPeople(); break;
                     default: Console.WriteLine("Невідомий пункт меню."); break;
                 }
             }
@@ -67,6 +69,8 @@ public class ConsoleMenu
         Console.WriteLine("6. Оформити замовлення");
         Console.WriteLine("7. Змінити стан замовлення");
         Console.WriteLine("8. Загальна інформація про магазин");
+        Console.WriteLine("9. Оплатити замовлення");
+        Console.WriteLine("10. Покупці та працівники");
         Console.WriteLine("0. Вихід");
         Console.WriteLine("====================================================");
     }
@@ -164,6 +168,26 @@ public class ConsoleMenu
 
         _orderService.ChangeStatus(orderId, (OrderStatus)statusNumber);
         Console.WriteLine("Стан замовлення змінено.");
+    }
+
+    private void PayOrder()
+    {
+        ShowOrders();
+        var orderId = ConsoleInput.ReadInt("ID замовлення: ");
+        var method = ConsoleInput.ReadInt("Спосіб оплати (1 — готівка, 2 — картка): ");
+
+        if (method != 1 && method != 2)
+            throw new ValidationException("Невідомий спосіб оплати.");
+
+        var payment = _orderService.PayOrder(orderId, method == 2);
+        Console.WriteLine($"Оплата: {payment.MethodName}. Сума: {payment.Amount:0.00} грн, " +
+                          $"комісія: {payment.CalculateFee():0.00} грн, до сплати: {payment.TotalToPay:0.00} грн.");
+    }
+
+    private void ShowPeople()
+    {
+        foreach (var person in _infoService.GetPeople())
+            Console.WriteLine(person);
     }
 
     private void ShowStoreInfo()

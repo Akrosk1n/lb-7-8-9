@@ -2,8 +2,6 @@ using StoreSystem.Domain;
 
 namespace StoreSystem.Data.Repositories;
 
-public interface ICategoryRepository
+public interface ICategoryRepository : IRepository<Category>
 {
-    IReadOnlyList<Category> GetAll();
-    Category? GetById(int id);
 }
